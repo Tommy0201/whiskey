@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* Prevent scrolling to keep the buttons within the viewport */
+      position: relative; /* Needed for absolute positioning of buttons */
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      position: absolute;
+      display: inline-flex;
+      top: 70%;
+      left:44%;
+      border-radius: 13px;
+      color: brown;
+      font-weight: 800;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    #no-button {
+      position: absolute;
+      padding:5px;
+      color: orange;
+      border:none;
+      background-color: white;
+    }
+    #yes-button {
+      padding:50px 100px 50px 100px;
+      font-size: 60px;
+      background-color: beige;
+
+    }
+
+    #yes-button:hover {
+      display: none;
+    }
+
+    #yes-button.clicked {
+      display: none;
+    }
+
+    #congratulation {
+      width: 100%;
+      height: 150px;
+      padding-bottom: 20%;
+      position: absolute;
+      left:50%;
+      display: none; 
+      transform: translate(-50%);
+    }
+
+    #congratulation iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+    #invite {
+      padding-bottom: 10%; 
+      font-weight: 800;
+      color: brown;
+      position: absolute;
+      left: 50%;
+      top:30%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+    }
+
+    #invite-gif {
+      width: 66%; 
+      height: 0;
+      padding-bottom: 20%; 
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+    }
+
+    #invite-gif iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <div id="invite"> Will You Join Me For A Drink?</div>
+  <div id="invite-gif">
+    <iframe src="https://giphy.com/embed/BPJmthQ3YRwD6QqcVD" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+  </div>
+  <div id="congratulation">
+    <iframe src="https://giphy.com/embed/W3yOXUbLsFg1G" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+  </div>
+  <button id="yes-button" class="yes-button">YES</button>
+  <button id="no-button">No</button>
+
+
+
+  <script>
+    const noButton = document.getElementById('no-button');
+    const yesButton = document.getElementById('yes-button');
+    const congratsMessage = document.getElementById('congratulation');
+    const invite = document.getElementById('invite');
+    const inviteGif = document.getElementById('invite-gif');
+
+    yesButton.style.left = `${noButton.offsetLeft + noButton.offsetWidth+10}px`;
+    yesButton.style.top = `${noButton.offsetTop-9}px`;
+
+    document.addEventListener('mousemove', (event) => {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      const noButtonRect = noButton.getBoundingClientRect();
+      const isMouseNearNoButton =
+        mouseX >= noButtonRect.left &&
+        mouseX <= noButtonRect.right &&
+        mouseY >= noButtonRect.top &&
+        mouseY <= noButtonRect.bottom;
+
+      if (isMouseNearNoButton) {
+        moveNoButton();
+        growYesButton();
+
+      }
+    });
+
+    function moveNoButton() {
+      const maxX = window.innerWidth - noButton.clientWidth;
+      const maxY = window.innerHeight - noButton.clientHeight;
+
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+
+      noButton.style.left = `${newX}px`;
+      noButton.style.top = `${newY}px`;
+    }
+    function growYesButton() {
+      const currentSize = parseInt(getComputedStyle(yesButton).fontSize);
+      const newSize = currentSize + 100; // You can adjust the growth rate as needed
+      yesButton.style.fontSize = `${newSize}px`;
+
+      // Move the Yes button closer to the center
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const currentX = parseInt(getComputedStyle(yesButton).left);
+      const currentY = parseInt(getComputedStyle(yesButton).top);
+
+      const newX = currentX - (currentX) * 0.1; // Adjust the speed of movement
+      const newY = currentY + (centerY - currentY) * 2.1; 
+      yesButton.style.left = `${newX}px`;
+      yesButton.style.top = `${newY}px`;
+}
+    noButton.addEventListener('mouseover', () => {
+      const yesButtons = document.getElementsByClassName('yes-button');
+      for (const btn of yesButtons) {
+        btn.style.display = 'inline-block';
+      }
+    });
+
+    yesButton.addEventListener('click', () => {
+      yesButton.style.display = 'none';
+      noButton.style.display = 'none';
+      inviteGif.style.display = 'none';
+      congratsMessage.style.display = 'block';
+      invite.textContent="Let's Fucking Gooo !!!";
+
+    });
+  </script>
+
+</body>
+</html>
